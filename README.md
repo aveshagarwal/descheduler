@@ -267,6 +267,12 @@ never evicted because these pods won't be recreated.
 ### Pod disruption Budget (PDB)
 Pods subject to Pod Disruption Budget (PDB) are not evicted if descheduling violates its pod
 disruption budget (PDB). The pods are evicted by using eviction subresource to handle PDB.
+When evicting a pod that would violate its application's PDB, descheduler will throw following
+similar error and continue with evictions of other pods.
+
+```
+I1016 18:13:29.038146   28985 duplicates.go:59] Error when evicting pod: "nginx5-rc-d6z8s" (&errors.errorString{s:"error when evicting pod (ignoring) \"nginx5-rc-d6z8s\": Cannot evict pod as it would violate the pod's disruption budget."})
+```
 
 ## Roadmap
 

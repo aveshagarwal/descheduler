@@ -40,4 +40,7 @@ type DeschedulerConfiguration struct {
 
 	// Node selectors
 	NodeSelector string `json:"nodeSelector,omitempty"`
+
+	// Enables both CPU & memory profiling for descheduler.
+	EnableProfiling bool `json:"enableProfiling,omitempty"`
 }

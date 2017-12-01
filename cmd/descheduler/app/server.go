@@ -65,7 +65,7 @@ func Run(rs *options.DeschedulerServer) error {
 		// As of now, adding only CPU & memory profiles, we can include
 		// more profiles like blocking, trace, mutex, when we move to http
 		// based profiling all those profiles are automatically added.
-		cpuprofile, err := os.Create("cpu.pprof")
+		cpuprofile, err := os.Create("cpu" + time.Now().String() + ".pprof")
 		if err != nil {
 			return err
 		}
@@ -80,7 +80,7 @@ func Run(rs *options.DeschedulerServer) error {
 	}
 
 	if rs.EnableProfiling {
-		heapprofile, err := os.Create("heap.pprof")
+		heapprofile, err := os.Create("heap" + time.Now().String() + ".pprof")
 		if err != nil {
 			return err
 		}

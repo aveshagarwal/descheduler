@@ -84,7 +84,7 @@ func Run(rs *options.DeschedulerServer) error {
 		if err != nil {
 			return err
 		}
-		defer heapprofile.close()
+		defer heapprofile.Close()
 
 		if err = pprof.WriteHeapProfile(heapprofile); err != nil {
 			return err

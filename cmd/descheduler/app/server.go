@@ -62,19 +62,33 @@ func NewDeschedulerCommand(out io.Writer) *cobra.Command {
 
 func Run(rs *options.DeschedulerServer) error {
 	if rs.EnableProfiling {
-		timeNow := time.Now().Format("20060102150405")
 		// As of now, adding only CPU & memory profiles, we can include
-		// more profiles like blocking, trace, mutex. When we move to http
+		// more profiles like blocking, trace, mutex, when we move to http
 		// based profiling all those profiles are automatically added.
-		cpuprofile, err := os.Create("cpu" + timeNow + ".pprof")
-		// The pprof file is of format cpu20171130152506.pprof
-		heapprofile, err := os.Create("heap" + timeNow + ".pprof")
+		cpuprofile, err := os.Create("cpu.pprof")
 		if err != nil {
-			glog.Errorf("%v", err)
+			return err
 		}
-		pprof.StartCPUProfile(cpuprofile)
+		if err = pprof.StartCPUProfile(cpuprofile); err != nil {
+			return err
+		}
 		defer pprof.StopCPUProfile()
-		pprof.WriteHeapProfile(heapprofile)
 	}
-	return descheduler.Run(rs)
+	err := descheduler.Run(rs)
+	if err != nil {
+		glog.Errorf("%v", err)
+	}
+
+	if rs.EnableProfiling {
+		heapprofile, err := os.Create("heap.pprof")
+		if err != nil {
+			return err
+		}
+		defer heapprofile.close()
+
+		if err = pprof.WriteHeapProfile(heapprofile); err != nil {
+			return err
+		}
+	}
+	return err
 }

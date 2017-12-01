@@ -199,7 +199,7 @@ func evictPodsFromTargetNodes(client clientset.Interface, evictionPolicyGroupVer
 		evictPods(node.gPods, client, evictionPolicyGroupVersion, targetThresholds, nodeCapacity, node.usage, &totalPods, &totalCpu, &totalMem, &podsEvicted, dryRun)
 
 		podsEvictedFromNode := podsEvicted - currentPodsEvicted
-		glog.V(1).Infof("%v pods evicted from node %#v with usage %v", podsEvictedFromNode, node.node.Name, node.usage)
+		glog.V(1).Infof("%v pods evicted from node %#v, and approximate resultant usage will be: %v", podsEvictedFromNode, node.node.Name, node.usage)
 	}
 	return podsEvicted
 }
